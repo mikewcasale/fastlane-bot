@@ -51,6 +51,7 @@ jobs:
             echo "::set-output name=skip::false"
           fi
 
+
       # If commit message doesn't contain "[skip ci]", continue to the next steps
       - name: Set up Python
         if: steps.check.outputs.skip != 'true'
