@@ -6,6 +6,7 @@
 
 Merged pull requests
 
+- Bugfix/GitHub actions [\#11](https://github.com/mikewcasale/fastlane-bot/pull/11) ([mikewcasale](https://github.com/mikewcasale))
 - Update release-and-pypi-publish.yml [\#10](https://github.com/mikewcasale/fastlane-bot/pull/10) ([mikewcasale](https://github.com/mikewcasale))
 - Update release-and-pypi-publish.yml [\#9](https://github.com/mikewcasale/fastlane-bot/pull/9) ([mikewcasale](https://github.com/mikewcasale))
 - Update release-and-pypi-publish.yml [\#8](https://github.com/mikewcasale/fastlane-bot/pull/8) ([mikewcasale](https://github.com/mikewcasale))
