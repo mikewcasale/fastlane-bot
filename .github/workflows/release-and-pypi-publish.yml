@@ -51,7 +51,6 @@ jobs:
             echo "::set-output name=skip::false"
           fi
 
-
       # If commit message doesn't contain "[skip ci]", continue to the next steps
       - name: Set up Python
         if: steps.check.outputs.skip != 'true'
@@ -73,10 +72,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt --force-reinstall
-
-      - name: Setup Brownie
-        if: steps.check.outputs.skip != 'true'
-        run: |
+          pip install bumpversion
           brownie networks import ./brownie-config.yaml true
           brownie networks delete mainnet
           brownie networks add "Ethereum Mainnet" "mainnet" host="https://eth-mainnet.alchemyapi.io/v2/$WEB3_ALCHEMY_PROJECT_ID" chainid=1
@@ -85,10 +81,6 @@ jobs:
           TENDERLY_FORK: '${{ secrets.TENDERLY_FORK }}'
           WEB3_ALCHEMY_PROJECT_ID: '${{ secrets.WEB3_ALCHEMY_PROJECT_ID }}'
           ETHERSCAN_TOKEN: '${{ secrets.ETHERSCAN_TOKEN }}'
-
-      - name: Install bumpversion
-        if: steps.check.outputs.skip != 'true'
-        run: pip install bumpversion
 
       - name: Bump version and set output
         if: steps.check.outputs.skip != 'true'
@@ -102,9 +94,11 @@ jobs:
           echo new_version=$NEW_VERSION >> $GITHUB_OUTPUT
           BRANCH_NAME="version-bump-$NEW_VERSION-run-$GITHUB_RUN_NUMBER"
           sed -i "s/$CURRENT_VERSION/$NEW_VERSION/" fastlane_bot/__init__.py
+          git checkout -b main
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git commit -m "Bump version [skip ci]" -a
+          git add fastlane_bot/__init__.py
+          git commit -m "Bump version [skip ci]"
 
       - name: Generate changelog
         if: steps.check.outputs.skip != 'true'
@@ -123,6 +117,7 @@ jobs:
       - name: Commit changelog update
         if: steps.check.outputs.skip != 'true'
         run: |
+          git checkout -b main
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add CHANGELOG.md
